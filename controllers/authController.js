@@ -39,7 +39,7 @@ exports.register = async (req, res) => {
         expiresIn: process.env.EMAIL_TOKEN_EXPIRES_IN,
       }
     );
-    const verificationLink = `${conf.secret.BASE_URL}/auth/verify-email?token=${token}`;
+    const verificationLink = `${conf.secret.BASE_URL}/api/auth/verify-email?token=${token}`;
     const mailOptions = {
       from: conf.secret.EMAIL_USER,
       to: user.email,
@@ -71,7 +71,7 @@ exports.verifyEmail = async (req, res) => {
 
     user.isActive = true;
     await user.save();
-    res.redirect("http://localhost:5173/auth/login?email=" + user.email);
+    res.redirect(`${conf.secret.FRONTEND_URL}/auth/login?email=` + user.email);
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Invalid or expired token" });
